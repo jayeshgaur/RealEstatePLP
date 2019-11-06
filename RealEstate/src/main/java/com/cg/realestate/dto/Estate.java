@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,10 +25,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "ems_estate")
+@SequenceGenerator(name = "estate_id_generator", sequenceName = "estate_id_generator",  initialValue = 6100)
 @EntityListeners(AuditingEntityListener.class)
 public class Estate {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "estate_id_generator")
 	@Column(name = "estate_id")
 	private BigInteger estateId;
 	

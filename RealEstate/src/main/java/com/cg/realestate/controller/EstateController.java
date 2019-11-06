@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,4 +28,16 @@ public class EstateController {
 	public ResponseEntity<?> addEstate(@RequestBody Estate estate) {
 			return new ResponseEntity<Estate>(estateService.addEstate(estate),HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/userpage")
+	public ResponseEntity<?> userPage(){
+		return new ResponseEntity<String>("User page...", HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/adminpage")
+	public ResponseEntity<?> adminPage(){
+		return new ResponseEntity<String>("Admin page...", HttpStatus.OK);
+	}
+	
+	
 }

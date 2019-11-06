@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,10 +25,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "ems_user")
+@SequenceGenerator(name = "user_id_generator", sequenceName = "user_id_generator",  initialValue = 4700)
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "user_id_generator")
+	
 	@Column(name = "user_id")
 	private BigInteger userId;
 
@@ -42,6 +45,10 @@ public class User {
 
 	@Column(name = "user_role")
 	private String userRole;
+	
+	@Column(name="user_contact")
+	private String userContact;
+	
 	
 	@OneToMany(mappedBy = "estateOwner")
 	private List<Estate> ownedProperties = new ArrayList<Estate>();
@@ -59,18 +66,27 @@ public class User {
 	@LastModifiedDate
 	protected String lastModifiedDate;
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	public User() {
 
 	}
-
-	public User(BigInteger userId, String userEmail, String userName, String userPassword, String userRole) {
+	
+	public User(String userEmail, String userName, String userPassword, String userRole, String userContact) {
 		super();
-		this.userId = userId;
 		this.userEmail = userEmail;
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userRole = userRole;
+		this.userContact = userContact;
 	}
+
 
 	public BigInteger getUserId() {
 		return userId;
@@ -118,6 +134,14 @@ public class User {
 
 	public void setOwnedProperties(List<Estate> ownedProperties) {
 		this.ownedProperties = ownedProperties;
+	}
+
+	public String getUserContact() {
+		return userContact;
+	}
+
+	public void setUserContact(String userContact) {
+		this.userContact = userContact;
 	}
 
 	public String getCreatedBy() {
