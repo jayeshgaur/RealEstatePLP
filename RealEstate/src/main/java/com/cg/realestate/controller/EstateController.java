@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  */
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -154,10 +153,11 @@ public class EstateController {
 	    }
 	    
 	    @GetMapping("/downloadFile/{fileId}")
-	    public ResponseEntity<Resource> downloadFile(@PathVariable BigInteger fileId) {
+	    public ResponseEntity<?> downloadFile(@PathVariable BigInteger fileId) {
 	        // Load file from database
 	        Images image = estateService.getFile(fileId);
 
+	       //  return new ResponseEntity<>(image.getData(),HttpStatus.OK);
 	        return ResponseEntity.ok()
 	                .contentType(MediaType.parseMediaType(image.getImageType()))
 	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getImageName() + "\"")
