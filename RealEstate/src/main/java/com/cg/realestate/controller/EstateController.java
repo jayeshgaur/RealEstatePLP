@@ -109,5 +109,26 @@ public class EstateController {
 		return new ResponseEntity<String>("Admin page...", HttpStatus.OK);
 	}
 	
+//	  @PostMapping("/uploadFile")
+//	    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+//	        DBFile dbFile = DBFileStorageService.storeFile(file);
+//
+//	        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//	                .path("/downloadFile/")
+//	                .path(dbFile.getId())
+//	                .toUriString();
+//
+//	        return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
+//	                file.getContentType(), file.getSize());
+//	    }
+//
+//	    @PostMapping("/uploadMultipleFiles")
+//	    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+//	        return Arrays.asList(files)
+//	                .stream()
+//	                .map(file -> uploadFile(file))
+//	                .collect(Collectors.toList());
+//	    }
+//	
 	
 }
