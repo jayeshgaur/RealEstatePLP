@@ -1,17 +1,30 @@
 package com.cg.realestate.dto;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "ems_estate")
+@EntityListeners(AuditingEntityListener.class)
 public class Estate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,9 +43,25 @@ public class Estate {
 	
 	@Column(name = "estate_price")
 	private BigInteger estatePrice;
+	
+	@ManyToOne
+	@JoinColumn(name = "fk_owner")
+	private User estateOwner;
+	
+	@CreatedBy
+	protected String createdBy;
+	
+	@CreatedDate	
+	@Temporal(TemporalType.TIMESTAMP)
+	protected Date creationDate;
+	
+	@LastModifiedBy
+	protected String lastModifiedBy;
+	
+	@LastModifiedDate
+	protected String lastModifiedDate;
 		
-	public Estate() {
-		
+	public Estate() {	
 	}
 
 	public Estate(BigInteger estateId, String estateName, Address estateAddress, BigInteger estateArea,
@@ -83,6 +112,38 @@ public class Estate {
 
 	public void setEstatePrice(BigInteger estatePrice) {
 		this.estatePrice = estatePrice;
+	}
+
+	public User getEstateOwner() {
+		return estateOwner;
+	}
+
+	public void setEstateOwner(User estateOwner) {
+		this.estateOwner = estateOwner;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public String getLastModifiedBy() {
+		return lastModifiedBy;
+	}
+
+	public void setLastModifiedBy(String lastModifiedBy) {
+		this.lastModifiedBy = lastModifiedBy;
 	}
 	
 
