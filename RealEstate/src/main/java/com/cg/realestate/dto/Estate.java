@@ -154,6 +154,22 @@ public class Estate {
 	public void setLastModifiedBy(String lastModifiedBy) {
 		this.lastModifiedBy = lastModifiedBy;
 	}
+
+	public String getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+
+	public void setLastModifiedDate(String lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public List<Images> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<Images> imageList) {
+		this.imageList = imageList;
+	}
 	
 
 }

@@ -22,20 +22,15 @@ public class Images {
 
 	@Column(name = "image_type")
 	private String imageType;
-
+	
+	@Column(name="image_url")
+	private String url;
+	
 	@Lob
 	private byte[] data;
 	
 	public Images() {
 
-	}
-
-	public Images(BigInteger imageId, String imageName, String imageType, byte[] data) {
-		super();
-		this.imageId = imageId;
-		this.imageName = imageName;
-		this.imageType = imageType;
-		this.data = data;
 	}
 
 	public BigInteger getImageId() {
@@ -68,6 +63,16 @@ public class Images {
 
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+
+
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public Images(String imageName, String imageType, byte[] data) {

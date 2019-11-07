@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,6 +34,9 @@ public class EstateServiceImpl implements EstateService {
 	@Autowired
 	ImagesRepository imagesRepository;
 	
+	private static final Logger logger = LoggerFactory.getLogger(EstateServiceImpl.class);
+	
+	
 	@Override
 	public Estate addEstate(Estate estate) {
 		estateRepository.save(estate);
@@ -53,15 +58,19 @@ public class EstateServiceImpl implements EstateService {
 	}
 	
 	/*
-	 * 
+	 * Description:  Persists the images into the database and associates it with database.
+	 * Created on: November 7, 2019
 	 */
 	public Images storeFile(MultipartFile file) throws ValidationException {
+		logger.info("Getting Image name..");
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		try {
 			if(fileName.contains("..")) {
 				throw new ValidationException("Could not store file"+fileName+". Please try again");
 			}
+			logger.info("Creating image object for "+fileName);
 			Images image = new Images(fileName, file.getContentType(), file.getBytes());
+			logger.info("Saving the image data into database and returning the image object..");
 			return imagesRepository.save(image);
 		}catch (Exception exception) {
 			throw new ValidationException("Could not store file"+fileName+". Please try again");
