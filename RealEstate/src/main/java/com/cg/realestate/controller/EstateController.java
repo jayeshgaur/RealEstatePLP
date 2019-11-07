@@ -46,7 +46,11 @@ import com.cg.realestate.exception.ValidationException;
 import com.cg.realestate.jwtconfig.JwtTokenUtil;
 import com.cg.realestate.service.EstateService;
 import com.cg.realestate.service.JwtUserDetailsService;
-
+/*
+ * Author: Jayesh Gaur
+ * Description: Controller class
+ * Created on: November 6, 2019
+ */
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EstateController {
@@ -65,7 +69,13 @@ public class EstateController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(EstateController.class);
 	
-	
+	/*
+	 * Author: 		Jayesh Gaur
+	 * Description: Takes care of user's role based authentication
+	 * Created on: 	November 6, 2019
+	 * Input: 		Login credentials
+	 * Output: 		JWT Token
+	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		logger.info("Authenticating request...");
@@ -80,6 +90,12 @@ public class EstateController {
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 	
+	/*
+	 * Description: 	Registration function. Will validate existing user email and phone number
+	 * Created on: 		November 6, 2019
+	 * Input: 			User details
+	 * Output: 			Newly created user Object with user Id
+	 */
 	@PostMapping(value = "/register")
 	public ResponseEntity<?> saveUser(@RequestBody User user) {
 	//	return ResponseEntity.ok(jwtUserDetailsService.save(user));
@@ -95,10 +111,14 @@ public class EstateController {
 		
 	}
 
+	/*
+	 * Description: 	Calls the authenticate function from AuthenticationManager class to validate user credentials
+	 * Created on: 		November 6, 2019
+	 * Input: 			user credentials
+	 * Output: 			void
+	 */
 	private void authenticate(String username, String password) throws Exception {
 		try {
-			System.out.println(username);
-			System.out.println(password);
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>()));
 		} catch (DisabledException e) {
 			throw new Exception("USER_DISABLED", e);
@@ -107,7 +127,9 @@ public class EstateController {
 		}
 	}
 	
-
+	/*
+	 * Description: 
+	 */
 	@PostMapping(value = "/add")
 	public ResponseEntity<?> addEstate(@RequestBody Estate estate) {
 			return new ResponseEntity<Estate>(estateService.addEstate(estate),HttpStatus.OK);
@@ -137,15 +159,15 @@ public class EstateController {
 	    }
 
 	    @PostMapping("/uploadMultipleFiles")
-	    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+	    public List<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
 	        return Arrays.asList(files)
 	                .stream()
 	                .map(file -> {
 						try {
 							return uploadFile(file);
-						} catch (ValidationException e) {
+						} catch (ValidationException exception) {
 							
-							e.printStackTrace();
+							exception.printStackTrace();
 						}
 						return null;
 					})
@@ -157,11 +179,11 @@ public class EstateController {
 	        // Load file from database
 	        Images image = estateService.getFile(fileId);
 
-	       //  return new ResponseEntity<>(image.getData(),HttpStatus.OK);
-	        return ResponseEntity.ok()
-	                .contentType(MediaType.parseMediaType(image.getImageType()))
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getImageName() + "\"")
-	                .body(new ByteArrayResource(image.getData()));
+	         return new ResponseEntity<>(image.getData(),HttpStatus.OK);
+//	        return ResponseEntity.ok()
+//	                .contentType(MediaType.parseMediaType(image.getImageType()))
+//	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getImageName() + "\"")
+//	                .body(new ByteArrayResource(image.getData()));
 	    }
 	
 	

@@ -54,7 +54,7 @@ public class Estate {
 	private User estateOwner;
 	
 	@OneToMany
-	@JoinColumn(name="fk_estatez")
+	@JoinColumn(name="fk_estate")
 	private List<Images> imageList = new ArrayList<Images>();
 	
 	@CreatedBy
