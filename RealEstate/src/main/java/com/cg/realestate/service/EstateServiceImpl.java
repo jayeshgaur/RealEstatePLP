@@ -1,6 +1,7 @@
 package com.cg.realestate.service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,5 +105,13 @@ public class EstateServiceImpl implements EstateService {
 	
 	public List<Estate> getListOfEstates(){
 		return estateRepository.findAll();
+	}
+
+	@Override
+	public List<Estate> getEstate(BigInteger estateId) {
+		List<Estate> estateList = new ArrayList<Estate>();
+		Estate estate = estateRepository.findById(estateId).get();
+		estateList.add(estate);
+		return estateList;
 	}
 }

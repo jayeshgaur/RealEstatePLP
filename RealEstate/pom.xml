@@ -78,6 +78,18 @@
 			<version>3.17</version>
 		</dependency>
 		
+		<!-- PDF -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.0.6</version>
+		</dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+		
 		<!-- send email -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

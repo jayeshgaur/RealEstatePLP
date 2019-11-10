@@ -1,5 +1,6 @@
 package com.cg.realestate.controller;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,6 +41,7 @@ import com.cg.realestate.dto.JwtResponse;
 import com.cg.realestate.dto.User;
 import com.cg.realestate.exception.ExistingUserException;
 import com.cg.realestate.exception.ValidationException;
+import com.cg.realestate.filesystem.GeneratePdf;
 import com.cg.realestate.jwtconfig.JwtTokenUtil;
 import com.cg.realestate.service.EstateService;
 import com.cg.realestate.service.JwtUserDetailsService;
@@ -248,4 +253,37 @@ public class EstateController {
 			return new ResponseEntity<String>("No properties in the system", HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	/*
+	 * Description:  Generates a pdf and sends it back as response to download
+	 * Created on: 	 November 10, 2019
+	 * Input: 		 Estate ID
+	 * Output: 		 Brochure of the estate in the form of .PDF
+	 */
+	@RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> citiesReport(@RequestParam("estateId") BigInteger estateId ) {
+
+        List<Estate> estateList = estateService.getEstate(estateId);
+        
+        for (Estate estate : estateList) {
+        	if(estate.getEstateId() != estateId) {
+        		estateList.remove(estate);
+        	}
+		}
+        
+        System.out.println(estateList.size());
+        
+        ByteArrayInputStream bis = GeneratePdf.citiesReport(estateList);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=citiesreport.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+	
 }

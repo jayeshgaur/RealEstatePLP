@@ -16,4 +16,5 @@ public interface EstateService {
 	public Images storeFile(MultipartFile file) throws ValidationException;
 	public Images getFile(BigInteger fileId);
 	public List<Estate> getListOfEstates();
+	List<Estate> getEstate(BigInteger estateId);
 }
