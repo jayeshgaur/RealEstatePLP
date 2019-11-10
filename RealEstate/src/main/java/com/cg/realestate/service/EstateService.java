@@ -17,4 +17,8 @@ public interface EstateService {
 	public Images getFile(BigInteger fileId);
 	public List<Estate> getListOfEstates();
 	List<Estate> getEstate(BigInteger estateId);
+	User findUser(BigInteger userId);
+	User updateInterests(BigInteger estateId, BigInteger userId);
+	List<User> getInterestedUsers();
+	boolean changeOfferEstate(BigInteger userId, BigInteger estateId);
 }

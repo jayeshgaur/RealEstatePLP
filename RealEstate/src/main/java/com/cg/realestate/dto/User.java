@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -67,6 +68,14 @@ public class User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "estateOwner")
 	private List<Estate> ownedProperties = new ArrayList<Estate>();
+	
+	@JsonIgnore
+	@OneToMany 
+	private List<Estate> interestedList = new ArrayList<Estate>();
+	
+	@JsonIgnore
+	@OneToOne
+	private Estate offerEstate;
 	
 	@CreatedBy
 	protected String createdBy;
@@ -189,6 +198,22 @@ public class User {
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public List<Estate> getInterestedList() {
+		return interestedList;
+	}
+
+	public void setInterestedList(List<Estate> interestedList) {
+		this.interestedList = interestedList;
+	}
+
+	public Estate getOfferEstate() {
+		return offerEstate;
+	}
+
+	public void setOfferEstate(Estate offerEstate) {
+		this.offerEstate = offerEstate;
 	}
 
 	

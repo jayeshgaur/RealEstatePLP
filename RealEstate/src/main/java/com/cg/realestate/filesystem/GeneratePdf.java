@@ -88,7 +88,7 @@ public class GeneratePdf {
             PdfWriter.getInstance(document, out);
             document.open();
             document.add(table);
-            document.add(new Paragraph("Address: "+estateList.get(0).getEstateAddress().getAddressLine()));
+            document.add(new Paragraph("Address: "+estateList.get(0).getEstateAddress().getAddressLine()+", "+estateList.get(0).getEstateAddress().getCity()+","+estateList.get(0).getEstateAddress().getState()));
             document.close();
 
         } catch (DocumentException ex) {

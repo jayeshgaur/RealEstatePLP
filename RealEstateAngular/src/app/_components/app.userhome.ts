@@ -3,8 +3,6 @@ import { EstateModel } from '../_models/app.estatemodel';
 import { EmsService } from '../_service/app.emsservice';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
-import { element } from '@angular/core/src/render3/instructions';
-import { Subscriber } from 'rxjs';
 
 @Component({
     selector:'userhome',
@@ -13,10 +11,15 @@ import { Subscriber } from 'rxjs';
 export class UserHomeComponent implements OnInit{
     
     estateList:EstateModel[]=[];
+    offerEstate:EstateModel;
+    offerImage:string;
     searchByCity:any;
     searchByArea:any;
     sortByPrice:any;
-
+    userId:any;
+    postfix:string=");";
+    prefix:string="background-image: url(";
+    offerImageUrl:string=this.prefix + this.offerImage + this.postfix;
     constructor(private service:EmsService, private router:Router){
         this.getEstates();
     }
@@ -32,6 +35,15 @@ export class UserHomeComponent implements OnInit{
      }
 
      getEstates(){
+
+        this.service.getOfferEstate(sessionStorage.getItem('userId')).subscribe(
+          (data:EstateModel)=>{
+            this.offerEstate = data;
+           this.service.getBlobThumbnail(this.offerEstate.imageList[0].url).subscribe((val)=> {
+              this.createImageFromBlobForOffer(val)
+           });
+          });
+
         this.service.getEstates().subscribe((data:EstateModel[])=>{
             this.estateList=data;
             this.estateList.forEach(element => {
@@ -41,9 +53,27 @@ export class UserHomeComponent implements OnInit{
                     this.createImageFromBlob(element.estateId,val);
                   }); 
             });
+            console.log(this.offerImageUrl);
           });
 
      }
+
+     createImageFromBlobForOffer(image: Blob) {
+      let reader = new FileReader();
+      reader.addEventListener("load", () => {
+
+     //     this.estateList.forEach(element =>{
+        //          if(element.estateId == estateId){
+                      this.offerImage = reader.result.toString();
+                      this.offerImageUrl= this.prefix + this.offerImage + this.postfix;
+          //        }
+     //     });
+
+      }, false);
+      if (image) {
+        reader.readAsDataURL(image);
+      }
+    }
     
      createImageFromBlob(estateId:any, image: Blob) {
         let reader = new FileReader();
@@ -157,7 +187,9 @@ export class UserHomeComponent implements OnInit{
       }
 
       downloadBrochure(estateId:any){
-       this.service.download(estateId).subscribe(
+      this.userId = sessionStorage.getItem('userId');
+      console.log(this.userId);
+       this.service.download(estateId, this.userId).subscribe(
             response => {
               var blob = new Blob([response], {type: 'application/pdf'});
               var filename = 'Brochure.pdf';

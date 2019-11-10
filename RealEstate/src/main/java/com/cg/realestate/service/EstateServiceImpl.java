@@ -107,11 +107,66 @@ public class EstateServiceImpl implements EstateService {
 		return estateRepository.findAll();
 	}
 
+	/*
+	 * Description: 	Returns the estate object corresponding to the estate Id inside a list 
+	 * Created on: 		November 10, 2019
+	 * Input: 			BigInteger estateId
+	 * Output: 			List of Estates containing only 1 element
+	 */
 	@Override
 	public List<Estate> getEstate(BigInteger estateId) {
 		List<Estate> estateList = new ArrayList<Estate>();
+		
 		Estate estate = estateRepository.findById(estateId).get();
 		estateList.add(estate);
 		return estateList;
 	}
+
+	/*
+	 * Description: 	Returns the user object corresponding to the user Id
+	 * Created on: 		November 10, 2019
+	 * Input: 			BigInteger userId
+	 * Output: 			user object
+	 */
+	@Override
+	public User findUser(BigInteger userId) {
+		Optional<User> user = userRepository.findById(userId);
+		if(user.isPresent()) {
+			return user.get();
+		}
+		return null;
+	}
+
+	@Override
+	public User updateInterests(BigInteger estateId, BigInteger userId) {
+		User user = findUser(userId);
+		Optional<Estate> estateList = estateRepository.findById(estateId);
+		Estate estate = estateList.get();
+		List<Estate> interestedList = user.getInterestedList();
+		if(interestedList != null) {
+			for (Estate estateIterator : interestedList) {
+				if(estateIterator.getEstateId() == estateId) {
+					return user;
+				}
+			}
+			interestedList.add(estate);
+		}
+		return user;
+	}
+
+	@Override
+	public List<User> getInterestedUsers() {
+		List<User> userList = userRepository.findAll();		
+		return userList;
+	}
+	
+	@Override
+	public boolean changeOfferEstate(BigInteger userId, BigInteger estateId) {
+	List<Estate> estateList = getEstate(estateId);
+	Estate estate = estateList.get(0);
+	User user = findUser(userId);
+	user.setOfferEstate(estate);
+	return true;
+	}
+
 }

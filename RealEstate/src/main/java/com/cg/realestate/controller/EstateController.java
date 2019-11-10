@@ -43,6 +43,7 @@ import com.cg.realestate.exception.ExistingUserException;
 import com.cg.realestate.exception.ValidationException;
 import com.cg.realestate.filesystem.GeneratePdf;
 import com.cg.realestate.jwtconfig.JwtTokenUtil;
+import com.cg.realestate.repository.EstateRepository;
 import com.cg.realestate.service.EstateService;
 import com.cg.realestate.service.JwtUserDetailsService;
 
@@ -262,8 +263,8 @@ public class EstateController {
 	 */
 	@RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> citiesReport(@RequestParam("estateId") BigInteger estateId ) {
-
+    public ResponseEntity<InputStreamResource> citiesReport(@RequestParam("estateId") BigInteger estateId, @RequestParam("userId") BigInteger userId) {
+		
         List<Estate> estateList = estateService.getEstate(estateId);
         
         for (Estate estate : estateList) {
@@ -271,11 +272,9 @@ public class EstateController {
         		estateList.remove(estate);
         	}
 		}
-        
-        System.out.println(estateList.size());
-        
+       
+        estateService.updateInterests(estateId, userId);        
         ByteArrayInputStream bis = GeneratePdf.citiesReport(estateList);
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=citiesreport.pdf");
 
@@ -285,5 +284,61 @@ public class EstateController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+	
+	/*
+	 * Description: 	 Returns a list of users who have downloaded a brochure(Shown interest) and are awaiting offers
+	 * Created on: 		 November 10, 2019
+	 * Input: 			 void
+	 * Output: 			 List of users
+	 */
+	@GetMapping(value="/getInterestedUsers")
+	public ResponseEntity<?> getInterestedUsers(){
+		List<User> userList = estateService.getInterestedUsers();
+		if(userList != null) {
+			return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("No new interested users", HttpStatus.NO_CONTENT);
+	}
+	
+	/*
+	 * Description: 	Returns a list of estates the user was interested in
+	 * Created on: 		November 10, 2019
+	 * Input: 			User Id
+	 * Output: 			List of estates the user was interested in
+	 */
+	@GetMapping(value="/getOffersForInterestedUser")
+	public ResponseEntity<?> getOffersForInterestedUser(@RequestParam("userId") BigInteger userId){
+		User user = estateService.findUser(userId);
+		List<Estate> estateList = user.getInterestedList();
+		return new ResponseEntity<List<Estate>>(estateList, HttpStatus.OK);		
+	}
+	
+	/*
+	 * Description: 	Gets the estate on offer for a user
+	 * Created on: 		November 10, 2019
+	 * Input: 			user Id
+	 * Output: 			Estate object on offer for the corresponding user
+	 */
+	@GetMapping(value="/getOfferEstate")
+	public ResponseEntity<?> getOfferEstate(@RequestParam("userId") BigInteger userId){
+		User user = estateService.findUser(userId);
+		Estate estate = user.getOfferEstate();
+		if(estate!=null) {
+			return new ResponseEntity<Estate>(estate, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("No offers yet...", HttpStatus.BAD_REQUEST);
+	}
+	
+	/*
+	 * Description: 		Updates the offerEstate for the user depending on the params
+	 * Created on: 			November 11, 2019
+	 * Input: 				User Id and Estate Id
+	 * Output: 				OK Status or String
+	 */
+	@GetMapping(value="/changeOffer")
+	public ResponseEntity<?> changeOffer(@RequestParam("userId") BigInteger userId, @RequestParam("estateId") BigInteger estateId){
+		boolean status = estateService.changeOfferEstate(userId, estateId);
+		return new ResponseEntity<Boolean>(status, HttpStatus.OK);
+	}
 	
 }

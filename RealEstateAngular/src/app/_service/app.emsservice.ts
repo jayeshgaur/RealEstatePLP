@@ -70,8 +70,24 @@ export class EmsService {
     return this.myhttp.get('http://localhost:9123/getEstates');
   }
 
-  download(estateId:any): Observable<Blob>{
-    return this.myhttp.get("http://localhost:9123/pdfreport?estateId="+estateId, {'responseType':"blob"});
+  download(estateId:any, userId:any): Observable<Blob>{
+    return this.myhttp.get("http://localhost:9123/pdfreport?estateId="+estateId+"&userId="+userId, {'responseType':"blob"});
+}
+
+getOfferEstate(userId:any){
+   return this.myhttp.get("http://localhost:9123/getOfferEstate?userId="+userId);
+}
+
+getInterestedUsers(){
+  return this.myhttp.get("http://localhost:9123/getInterestedUsers");
+}
+
+getMyEstates(userId:any){
+  return this.myhttp.get("http://localhost:9123/getOffersForInterestedUser?userId="+userId);
+}
+
+changeOffer(userId:any, estateId:any){
+  return this.myhttp.get('http://localhost:9123/changeOffer?userId='+userId+"&estateId="+estateId);
 }
 
 }
