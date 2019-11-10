@@ -89,7 +89,8 @@
             </tr>
             <pagination-controls (pageChange)="p = $event"></pagination-controls>
         </table>
-
+        <ng-template #noTests [ngIf]="(userId != null) && (estateList == null)">User hasn't viewed any estate yet</ng-template>
+    
 
         </div>
       </div>
