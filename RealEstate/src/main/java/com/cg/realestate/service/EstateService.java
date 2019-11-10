@@ -1,6 +1,7 @@
 package com.cg.realestate.service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,4 +15,5 @@ public interface EstateService {
 	User findUser(String userEmail) throws ValidationException;
 	public Images storeFile(MultipartFile file) throws ValidationException;
 	public Images getFile(BigInteger fileId);
+	public List<Estate> getListOfEstates();
 }

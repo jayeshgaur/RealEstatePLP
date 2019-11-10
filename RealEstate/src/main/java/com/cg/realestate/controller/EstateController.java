@@ -8,10 +8,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-/*  Author: 		Jayesh Gaur
- *  Description:  	Service class of the program
- *  Created on: 	November 6, 2019
- */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +90,6 @@ public class EstateController {
 	@PostMapping(value = "/register")
 	public ResponseEntity<?> saveUser(@RequestBody User user) {
 		// return ResponseEntity.ok(jwtUserDetailsService.save(user));
-
 		try {
 			User newUser = jwtUserDetailsService.save(user);
 			logger.info("New User Created. AUDIT TRAIL=> User ID: " + newUser.getUserId() + " Created by: "
@@ -105,6 +101,8 @@ public class EstateController {
 		}
 
 	}
+	
+
 
 	/*
 	 * Description: Calls the authenticate function from AuthenticationManager class
@@ -119,6 +117,45 @@ public class EstateController {
 			throw new Exception("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+	}
+	
+	/*
+	 * Author: 			Jayesh Gaur
+	 * Description: 	Returns user Id of the user associated with the useremail in parameter
+	 * Created on: 		October 23, 2019
+	 * Input: 			User Email
+	 * Output: 			User id
+	 */
+	@GetMapping("/finduser")
+	public ResponseEntity<?> findUser(@RequestParam("userEmail") String userEmail){
+		try {
+			logger.info("Fetching user object linked with user Email..");
+			User user = estateService.findUser(userEmail);
+			return new ResponseEntity<User>(user,HttpStatus.OK);
+		} catch (ValidationException exception) {
+			logger.info("ValidationException caught in find user controller..");
+			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	/*
+	 * Author: 			Jayesh Gaur
+	 * Description: 	Returns role of the user associated with the useremail in parameter
+	 * Created on: 		October 23, 2019
+	 * Input: 			User Email
+	 * Output: 			User id
+	 */
+	@GetMapping("/finduserrole")
+	public ResponseEntity<?> findUserRole(@RequestParam("userEmail") String userEmail){
+		try {
+			logger.info("Fetching user object linked with user Email..");
+			User user = estateService.findUser(userEmail);
+			return new ResponseEntity<String>(user.getUserRole(),HttpStatus.OK);
+		} catch (ValidationException exception) {
+			logger.info("ValidationException caught in find user controller..");
+			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -193,5 +230,22 @@ public class EstateController {
 //	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getImageName() + "\"")
 //	                .body(new ByteArrayResource(image.getData()));
 	}
-
+	
+	
+	/*
+	 * Description: Returns a list of all properties in the system
+	 * Created on:  November 10, 2019
+	 * Input: 		Non
+	 * Output: 		List of all properties in the system
+	 */
+	@GetMapping(value="/getEstates")
+	public ResponseEntity<?> getEstates(){
+		List<Estate> estateList = estateService.getListOfEstates();
+		if(estateList != null) {
+			return new ResponseEntity<List<Estate>>(estateList, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<String>("No properties in the system", HttpStatus.NO_CONTENT);
+		}
+	}
 }

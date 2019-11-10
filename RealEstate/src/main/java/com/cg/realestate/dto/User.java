@@ -1,6 +1,7 @@
 package com.cg.realestate.dto;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ems_user")
@@ -49,7 +52,19 @@ public class User {
 	@Column(name="user_contact")
 	private String userContact;
 	
+	@Column(name="user_birthdate")
+	private LocalDate birthDate;
 	
+	public User(String userEmail, String userName, String userPassword, String userContact, LocalDate birthDate) {
+		super();
+		this.userEmail = userEmail;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userContact = userContact;
+		this.birthDate = birthDate;
+	}
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "estateOwner")
 	private List<Estate> ownedProperties = new ArrayList<Estate>();
 	
@@ -166,6 +181,14 @@ public class User {
 
 	public void setLastModifiedDate(String lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	

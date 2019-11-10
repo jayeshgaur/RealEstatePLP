@@ -6,22 +6,19 @@ import { EmsService } from '../_service/app.emsservice';
     templateUrl:'../_html/app.test.html'
 })
 export class TestComponent{
+
+  imageBlobUrl: string = null;
+  
     constructor(private service:EmsService){
         this.getThumbnail();
     }
-    imageBlobUrl: string | null = null;
-getThumbnail() : void {
-    this.service.getBlobThumbnail()
-      .subscribe((val) => {
-          console.log(val);
-          this.createImageFromBlob(val);
-        },
-        response => {
-          console.log("POST - getThumbnail - in error", response);
-        },
-        () => {
-          console.log("POST - getThumbnail - observable is now completed.");
-        });
+  
+    getThumbnail() : void {
+    // this.service.getBlobThumbnail()
+    //   .subscribe((val) => {
+    //       console.log(val);
+    //       this.createImageFromBlob(val);
+    //     });
   }
 
   createImageFromBlob(image: Blob) {

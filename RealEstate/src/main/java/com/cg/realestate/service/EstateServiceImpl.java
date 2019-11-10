@@ -1,6 +1,7 @@
 package com.cg.realestate.service;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -20,7 +21,10 @@ import com.cg.realestate.exception.ValidationException;
 import com.cg.realestate.repository.EstateRepository;
 import com.cg.realestate.repository.ImagesRepository;
 import com.cg.realestate.repository.UserRepository;
-
+/*  Author: 		Jayesh Gaur
+ *  Description:  	Service class of the program
+ *  Created on: 	November 6, 2019
+ */
 @Service
 @Transactional
 public class EstateServiceImpl implements EstateService {
@@ -58,6 +62,23 @@ public class EstateServiceImpl implements EstateService {
 	}
 	
 	/*
+	 * Author: JayeshGaur
+	 * Description: returns user role of the user associated with the email in parameter
+	 * Created on: October 23, 2019
+	 * Input: User Email
+	 * Output: user role
+	 */
+	public String findUserRole(String userEmail) {
+		Optional<User> user = userRepository.findByUserEmail(userEmail);
+		if(user.isPresent()) {
+			return user.get().getUserRole();
+		}
+		else {
+			return "ROLE_Customer";
+		}
+	}
+	
+	/*
 	 * Description:  Persists the images into the database and associates it with database.
 	 * Created on: November 7, 2019
 	 */
@@ -80,4 +101,8 @@ public class EstateServiceImpl implements EstateService {
 	public Images getFile(BigInteger fileId) {
         return imagesRepository.findById(fileId).get();
     }
+	
+	public List<Estate> getListOfEstates(){
+		return estateRepository.findAll();
+	}
 }

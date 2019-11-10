@@ -25,16 +25,45 @@
 
 <body>
 
-  
+    <div class="site-navbar mt-4">
+        <div class="container py-1">
+            <div class="row align-items-center">
+                <div class="col-8 col-md-8 col-lg-4">
+                    <h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0"><strong>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Homeland<span
+                                    class="text-danger">.</span></strong></a></h1>
+                </div>
+                <div class="col-4 col-md-4 col-lg-8">
+                    <nav class="site-navigation text-right text-md-right site-navbar" role="navigation">
+
+                        <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#"
+                                class="site-menu-toggle js-menu-toggle text-white"><span
+                                    class="icon-menu h3"></span></a></div>
+
+                        <ul class="site-menu js-clone-nav d-none d-lg-block">
+                            <li>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li><a href="register">Register</a></li>
+                            <li class="active"><a href="login">Login</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
 
     <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins"
         style="background-image: url(/assets/images/registration.jpg);">
 
 
+
         <div class="wrapper wrapper--w680">
             <div class="card card-4">
                 <div class="card-body">
-                    <h2 class="title">Registration Form</h2>
+                    <h2 class="title">Enter your credentials</h2>
                     <form #f="ngForm" name="registerform" novalidate>
 
                         <div class="form-group">
@@ -42,7 +71,7 @@
                             <div class="row row-space">
                                 <div class="input-group">
                                     <label class="label">Email: </label>
-                                    <input class="input--style-4" [(ngModel)]="user.userEmail" type="email"
+                                    <input class="input--style-4" [(ngModel)]="useremail" type="email"
                                         name="userEmail" #userEmail="ngModel"
                                         [ngClass]="{'is-invalid':f.submitted && userEmail.invalid }"
                                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" required>
@@ -59,7 +88,7 @@
                             <div class="row row-space">
                                 <div class="input-group">
                                     <label class="label">Password</label>
-                                    <input class="input--style-4" [(ngModel)]="user.userPassword" type="password"
+                                    <input class="input--style-4" [(ngModel)]="password" type="password"
                                         name="userPassword" #userPassword="ngModel"
                                         [ngClass]="{'is-invalid':f.submitted && userPassword.invalid }"
                                         pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" required>
@@ -73,63 +102,15 @@
                                 <div *ngIf="userPassword.errors.pattern">Enter valid password</div>
                             </div>
 
-                            <div class="row row-space">
-                                <div class="input-group">
-                                    <label class="label">Name</label>
-                                    <input class="input--style-4" [(ngModel)]="user.userName" type="text"
-                                        name="userName" #userName="ngModel"
-                                        [ngClass]="{'is-invalid':f.submitted && userName.invalid }" required>
-                                </div>
-                            </div>
-                            <div *ngIf="userName.invalid && (userName.dirty ||userName.touched || f.submitted)"
-                                class="alert alert-danger">
-                                <div *ngIf="userName.errors.required">
-                                    Name is required.
-                                </div>
-                            </div>
-
-                            <div class="row row-space">
-                                <div class="input-group">
-                                    <label class="label">Birth date</label>
-                                    <input class="input--style-4" [(ngModel)]="user.birthDate" type="date"
-                                    [max]="maxDate"   name="birthDate" #birthDate="ngModel" (change)="checkDate()" required>
-                                </div>
-                            </div>
-                            <div class="alert-danger">
-                            {{errorMessage}}
-                            </div>
-
-                            <div class="row row-space">
-                                <div class="input-group">
-                                    <label class="label">Phone Number</label>
-                                    <input class="input--style-4" type="text" name="userContact"
-                                        [(ngModel)]="user.userContact" #contactNo="ngModel"
-                                        [ngClass]="{'is-invalid':f.submitted && userContact.invalid  }" maxlength="10"
-                                        minlength="10" pattern="[0-9]+" required>
-                                </div>
-                            </div>
-                            <div *ngIf="contactNo.invalid && (contactNo.dirty ||contactNo.touched || f.submitted )"
-                                class="alert alert-danger">
-                                <div *ngIf="contactNo.errors.required">
-                                    ContactNumber is required.
-                                </div>
-                                <div *ngIf="contactNo.errors.minlength">
-                                    ContactNumber must be at least 10 characters long.
-                                </div>
-                                <div *ngIf="contactNo.errors.pattern">
-                                    ContactNumber should be digits only
-                                </div>
-                            </div>
-
                             <div class="p-t-15">
-                                <button (click)="register()" [disabled]="f.form.invalid"
-                                    class="btn btn--radius-2 btn--blue" type="submit">Register</button>
+                                <button (click)="checkLogin()" [disabled]="f.form.invalid"
+                                    class="btn btn--radius-2 btn--blue" type="submit">Login</button>
                             </div>
 
                         </div>
                     </form>
                     <div class="p-t-15">
-                        <a href="login"> Already a member? Login</a>
+                        <a href="login"> New here? Signup!</a>
                     </div>
                 </div>
             </div>
