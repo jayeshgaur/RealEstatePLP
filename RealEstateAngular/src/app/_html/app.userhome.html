@@ -126,15 +126,15 @@
                         <div class="col-md-12">
                           <div class="property-entry horizontal d-lg-flex">
               
-                            <a href="#" class="property-thumbnail h-100">
+                           <div class="property-thumbnail h-100">
                               <div class="offer-type-wrap">
                                 <span class="offer-type bg-danger">For Sale</span>
                               </div>
                               <img [src]="estate.thumbnail" alt="Image" class="img-fluid">
-                            </a>
+                            </div>
               
                             <div class="p-4 property-body">
-                              <a href="#" class="property-favorite"><span class="icon-heart-o"></span></a>
+                              <a (click)=downloadBrochure(estate.estateId) class="property-favorite"><span  class="icon-arrow_drop_down"></span></a>
                               <h2 class="property-title"><a href="#">{{estate.estateName}}</a></h2>
                               <span class="property-location d-block mb-3"><span class="property-icon icon-room"></span>{{estate.estateAddress.addressLine}}, {{estate.estateAddress.city}}</span>
                               <strong class="property-price text-primary mb-3 d-block text-success">Rs. {{estate.estatePrice}}</strong>

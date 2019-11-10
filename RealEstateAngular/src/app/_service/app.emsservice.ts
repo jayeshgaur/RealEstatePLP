@@ -70,4 +70,8 @@ export class EmsService {
     return this.myhttp.get('http://localhost:9123/getEstates');
   }
 
+  download(estateId:any): Observable<Blob>{
+    return this.myhttp.get("http://localhost:9123/pdfreport?estateId="+estateId, {'responseType':"blob"});
+}
+
 }

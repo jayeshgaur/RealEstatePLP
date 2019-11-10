@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import { EstateModel } from '../_models/app.estatemodel';
 import { EmsService } from '../_service/app.emsservice';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 import { element } from '@angular/core/src/render3/instructions';
+import { Subscriber } from 'rxjs';
 
 @Component({
     selector:'userhome',
@@ -152,6 +154,16 @@ export class UserHomeComponent implements OnInit{
             this.estateList.sort((right, left) => left.estatePrice > right.estatePrice ? 1 : -1 );
           }
 
+      }
+
+      downloadBrochure(estateId:any){
+       this.service.download(estateId).subscribe(
+            response => {
+              var blob = new Blob([response], {type: 'application/pdf'});
+              var filename = 'Brochure.pdf';
+              saveAs(blob,filename);  
+            }
+       );
       }
     
 }
