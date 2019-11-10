@@ -11,6 +11,7 @@ import { LoginComponent } from './_components/app.login';
 import { AdminHomeComponent } from './_components/app.adminhome';
 import { UserHomeComponent } from './_components/app.userhome';
 import { LogoutComponent } from './_components/app.logout';
+import {NgxPaginationModule} from 'ngx-pagination'; 
 import { Error403Component } from './_components/app.error403';
 const myRoute: Routes =[
     { path: '', redirectTo:"home",pathMatch:'full'},
@@ -34,6 +35,7 @@ const myRoute: Routes =[
         FormsModule,
         HttpClientModule,
         RouterModule.forRoot(myRoute),
+        NgxPaginationModule
         
     ],
     declarations: [

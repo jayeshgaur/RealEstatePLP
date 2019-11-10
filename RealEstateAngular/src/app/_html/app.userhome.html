@@ -61,43 +61,35 @@
         <div class="row">
           <form class="form-search col-md-12" style="margin-top: -100px;">
             <div class="row  align-items-end">
-              <div class="col-md-2 ">
-                <label for="list-types">Listing Types</label>
+
+              <div class="col-md-4">
+                <label for="offer-types">Square Ft Area</label>
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
-                  <select name="list-types" id="list-types" class="form-control d-block rounded-0">
-                    <option value="">Condo</option>
-                    <option value="">Commercial Building</option>
-                    <option value="">Land Property</option>
+                  <select [(ngModel)]="searchByArea" name="offer-types" id="offer-types" class="form-control d-block rounded-0">
+                      <option value="0">Show All</option>
+                    <option value="1">100-300</option>
+                    <option value="2">301-550</option>
+                    <option value="3">550+</option>
                   </select>
                 </div>
               </div>
-              <div class="col-md-3">
-                <label for="offer-types">Offer Type</label>
-                <div class="select-wrap">
-                  <span class="icon icon-arrow_drop_down"></span>
-                  <select name="offer-types" id="offer-types" class="form-control d-block rounded-0">
-                    <option value="">For Sale</option>
-                    <option value="">For Rent</option>
-                    <option value="">For Lease</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-3">
+
+              <div class="col-md-4">
                 <label for="select-city">Select City</label>
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
-                  <select name="select-city" id="select-city" class="form-control d-block rounded-0">
-                    <option value="">New York</option>
-                    <option value="">Brooklyn</option>
-                    <option value="">London</option>
-                    <option value="">Japan</option>
-                    <option value="">Philippines</option>
+                  <select [(ngModel)]="searchByCity" name="select-city" id="select-city" class="form-control d-block rounded-0">
+                      <option value="">Show All</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Kolkata">Kolkata</option>
                   </select>
                 </div>
               </div>
-              <div class="col-md-3">
-                <input type="submit" class="btn btn-success text-white btn-block rounded-0" value="Search">
+
+              <div class="col-md-4">
+                <input type="submit" (click)="sortEstates()"  class="btn btn-success text-white btn-block rounded-0" value="Search">
               </div>
             </div>
           </form>
@@ -106,25 +98,13 @@
         <div class="row">
           <div class="col-md-12">
             <div class="view-options bg-white py-3 px-3 d-md-flex align-items-center">
-              <div class="mr-auto">
-                <a href="index.html" class="icon-view view-module active"><span class="icon-view_module"></span></a>
-                <a href="view-list.html" class="icon-view view-list"><span class="icon-view_list"></span></a>
-                
-              </div>
               <div class="ml-auto d-flex align-items-center">
-                <div>
-                  <a href="#" class="view-list px-3 border-right active">All</a>
-                  <a href="#" class="view-list px-3 border-right">Rent</a>
-                  <a href="#" class="view-list px-3">Sale</a>
-                </div>
-
-
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
-                  <select class="form-control form-control-sm d-block rounded-0">
-                    <option value="">Sort by</option>
-                    <option value="">Price Ascending</option>
-                    <option value="">Price Descending</option>
+                  <select [(ngModel)]="sortByPrice" (ngModelChange)="sortPrice()" class="form-control form-control-sm d-block rounded-0">
+                    <option value="">Sort by Price</option>
+                    <option value="0">Ascending</option>
+                    <option value="1">Descending</option>
                   </select>
                 </div>
               </div>
@@ -141,7 +121,7 @@
         <div class="row mb-5">
 
          <div>
-                <table><tr *ngFor='let estate of estateList'>
+                <table><tr *ngFor='let estate of estateList | paginate: { itemsPerPage: 4, currentPage: p }'>
                 <div  class="row mb-4">
                         <div class="col-md-12">
                           <div class="property-entry horizontal d-lg-flex">
@@ -183,24 +163,8 @@
                           </div>
                         </div>
 
-                 </div></tr>
-                </table>
-         
-
-            <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="site-pagination">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <span>...</span>
-                <a href="#">10</a>
-                </div>
-            </div>  
-            </div>
-        
+                 </div></tr><pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </table>        
       </div>
     </div>
     
