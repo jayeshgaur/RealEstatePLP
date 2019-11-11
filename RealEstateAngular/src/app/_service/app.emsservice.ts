@@ -38,18 +38,18 @@ export class EmsService {
   }
 
   register(newUser: any) {
-    return this.myhttp.post('http://localhost:9123/register', newUser, { responseType: 'json' });
+    return this.myhttp.post('http://'+ window.location.hostname+':9123/register', newUser, { responseType: 'json' });
   }
 
   getUser(useremail: any) {
-    return this.myhttp.get("http://localhost:9123/finduser?userEmail=" + useremail);
+    return this.myhttp.get("http://"+ window.location.hostname+":9123/finduser?userEmail=" + useremail);
   }
 
   authenticate(username: string, password: string) {
     console.log("Inside service authenticate.. email: " + username + " password: " + password);
     const reqbody = { userEmail: username, password: password };
     console.log(JSON.stringify(reqbody))
-    return this.myhttp.post<any>('http://localhost:9123/authenticate', { userEmail: username, password: password });
+    return this.myhttp.post<any>('http://'+ window.location.hostname+':9123/authenticate', { userEmail: username, password: password });
   }
 
   isUserLoggedIn() {
@@ -67,27 +67,27 @@ export class EmsService {
   }
 
   getEstates() {
-    return this.myhttp.get('http://localhost:9123/getEstates');
+    return this.myhttp.get('http://'+ window.location.hostname+':9123/getEstates');
   }
 
   download(estateId:any, userId:any): Observable<Blob>{
-    return this.myhttp.get("http://localhost:9123/pdfreport?estateId="+estateId+"&userId="+userId, {'responseType':"blob"});
+    return this.myhttp.get("http://"+ window.location.hostname+":9123/pdfreport?estateId="+estateId+"&userId="+userId, {'responseType':"blob"});
 }
 
 getOfferEstate(userId:any){
-   return this.myhttp.get("http://localhost:9123/getOfferEstate?userId="+userId);
+   return this.myhttp.get("http://"+ window.location.hostname+":9123/getOfferEstate?userId="+userId);
 }
 
 getInterestedUsers(){
-  return this.myhttp.get("http://localhost:9123/getInterestedUsers");
+  return this.myhttp.get("http://"+ window.location.hostname+":9123/getInterestedUsers");
 }
 
 getMyEstates(userId:any){
-  return this.myhttp.get("http://localhost:9123/getOffersForInterestedUser?userId="+userId);
+  return this.myhttp.get("http://"+ window.location.hostname+":9123/getOffersForInterestedUser?userId="+userId);
 }
 
 changeOffer(userId:any, estateId:any){
-  return this.myhttp.get('http://localhost:9123/changeOffer?userId='+userId+"&estateId="+estateId);
+  return this.myhttp.get('http://'+ window.location.hostname+':9123/changeOffer?userId='+userId+"&estateId="+estateId);
 }
 
 }

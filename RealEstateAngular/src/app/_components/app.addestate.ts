@@ -47,7 +47,7 @@ export class AddEstateComponent implements OnInit{
               frmData.append("estateAddress.pincode", this.estateAddress.pincode);
               frmData.append("userId", sessionStorage.getItem('userId'));
 
-              this.myhttp.post('http://localhost:9123/addProperty', frmData).subscribe(
+              this.myhttp.post('http://'+ window.location.hostname+':9123/addProperty', frmData).subscribe(
                   data => {
                     alert("Added successfully!")
                     location.reload();
