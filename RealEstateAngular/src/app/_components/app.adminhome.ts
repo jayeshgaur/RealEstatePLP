@@ -14,6 +14,7 @@ userList:UserModel[]=[];
 estateList:EstateModel[]=[];
 userId:any;
 estateId:any;
+check:any=null;
 
 constructor(private service:EmsService, private router:Router){    
 }
@@ -41,11 +42,13 @@ selectUser(user:UserModel){
         this.service.getMyEstates(user.userId).subscribe((estateList:EstateModel[]) => {
             this.estateList = estateList;
             console.log(this.estateList)
+            this.check="a";
         });
     }   
 }
 
 changeUser(){
+    this.check=null;
     this.ngOnInit();
 }
 
