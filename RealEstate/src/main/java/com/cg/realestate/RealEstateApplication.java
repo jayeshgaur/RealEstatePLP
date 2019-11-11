@@ -1,5 +1,9 @@
 package com.cg.realestate;
-
+/*
+ * Author:  Jayesh Gaur
+ * Description: 	Main class of the application
+ * Created on: 		November 8, 2019
+ */
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

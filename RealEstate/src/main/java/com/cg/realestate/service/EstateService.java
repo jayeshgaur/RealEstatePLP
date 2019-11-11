@@ -1,5 +1,9 @@
 package com.cg.realestate.service;
-
+/*
+ * Author: 	Jayesh Gaur
+ * Description: 	Service interface of the application
+ * Created on: 		November 6, 2019
+ */
 import java.math.BigInteger;
 import java.util.List;
 

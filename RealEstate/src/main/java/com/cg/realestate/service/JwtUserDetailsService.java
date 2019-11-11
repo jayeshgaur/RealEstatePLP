@@ -19,7 +19,11 @@ import com.cg.realestate.exception.ErrorMessages;
 import com.cg.realestate.exception.ExistingUserException;
 import com.cg.realestate.repository.EstateRepository;
 import com.cg.realestate.repository.UserRepository;
-
+/*
+ * AUthor: Jayesh Gaur
+ * Description: 	Authentication service class of the application
+ * Created on: 		November 6, 2019
+ */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 	
@@ -34,6 +38,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JwtUserDetailsService.class);
 	
+	/*
+	 * Description: 	Retrieves user credentials from the database
+	 * Created on: 		november 6, 2019
+	 * Input: 			User email
+	 * Output: 			UserDetails class containing sensitive information
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		Optional<User> user = userRepository.findByUserEmail(userEmail);

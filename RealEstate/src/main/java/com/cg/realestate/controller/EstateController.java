@@ -76,14 +76,14 @@ public class EstateController {
 	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-		logger.info("Authenticating request...");
+		logger.info("Authenticating login credentials...");
 		authenticate(authenticationRequest.getUserEmail(), authenticationRequest.getPassword());
 		final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(authenticationRequest.getUserEmail());
-
+		logger.info("Login successful..Generating token");
 		User user = estateService.findUser(authenticationRequest.getUserEmail());
 		System.out.println(user);
 		final String token = jwtTokenUtil.generateToken(userDetails);
-
+		logger.info("Returning token..");
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
@@ -118,10 +118,12 @@ public class EstateController {
 		try {
 			authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>()));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+		} catch (DisabledException exception) {
+			logger.error(exception.getMessage());
+			throw new Exception("USER_DISABLED", exception);
+		} catch (BadCredentialsException exception) {
+			logger.error(exception.getMessage());
+			throw new Exception("INVALID_CREDENTIALS", exception);
 		}
 	}
 	
@@ -184,7 +186,7 @@ public class EstateController {
 			}
 			return null;
 		}).collect(Collectors.toList()));
-		logger.info("All images added into estate and the Database.CACHE..and setting foreign keys..");
+		logger.info("All images added into estate and the Database..and setting foreign keys..");
 		return new ResponseEntity<Estate>(estateService.addEstate(estate), HttpStatus.OK);
 	}
 	
@@ -214,17 +216,12 @@ public class EstateController {
 	}
 
 	
-
-	@GetMapping(value = "/userpage")
-	public ResponseEntity<?> userPage() {
-		return new ResponseEntity<String>("User page...", HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/adminpage")
-	public ResponseEntity<?> adminPage() {
-		return new ResponseEntity<String>("Admin page...", HttpStatus.OK);
-	}
-
+	/*
+	 * Description: Calls service to persist the image multipart file. Generates URL for download
+	 * Created on: 	November 9, 2019
+	 * Input: 		Image Multipart single file
+	 * Output: 		Image object
+	 */
 	public Images uploadFile(@RequestParam("file") MultipartFile file) throws ValidationException {
 		// Creating new image object for new image file and calling storeFile
 		Images image = estateService.storeFile(file);
@@ -238,6 +235,13 @@ public class EstateController {
 //	                file.getContentType(), file.getSize());
 	}
 
+	
+	/*
+	 * Description: Accepts multiple image files in a Multipart array and calls the single image upload method above one by one
+	 * Created on: 	November 9, 2019
+	 * Input: 		Array of images 
+	 * Output: List of images
+	 */
 	@PostMapping("/uploadMultipleFiles")
 	public List<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
 		return Arrays.asList(files).stream().map(file -> {
@@ -251,11 +255,18 @@ public class EstateController {
 		}).collect(Collectors.toList());
 	}
 
+	
+	/*
+	 * Description: 	Accepts the download URL and sends back image data in the form of a blob or bytes
+	 * Created on:		November 9, 2019
+	 * Input: 			URL
+	 * Output:			Image data corresponding to the URL
+	 */
 	@GetMapping("/downloadFile/{fileId}")
 	public ResponseEntity<?> downloadFile(@PathVariable BigInteger fileId) {
 		// Load file from database
 		Images image = estateService.getFile(fileId);
-
+		logger.info("Image file obtained.. returning object.");
 		return new ResponseEntity<>(image.getData(), HttpStatus.OK);
 //	        return ResponseEntity.ok()
 //	                .contentType(MediaType.parseMediaType(image.getImageType()))
@@ -272,11 +283,14 @@ public class EstateController {
 	 */
 	@GetMapping(value="/getEstates")
 	public ResponseEntity<?> getEstates(){
+		logger.info("Fetching estate list...");
 		List<Estate> estateList = estateService.getListOfEstates();
 		if(estateList != null) {
+			logger.info("Returning estate list..");
 			return new ResponseEntity<List<Estate>>(estateList, HttpStatus.OK);
 		}
 		else {
+			logger.error("Empty estate list.. returning null");
 			return new ResponseEntity<String>("No properties in the system", HttpStatus.NO_CONTENT);
 		}
 	}
@@ -290,7 +304,7 @@ public class EstateController {
 	@RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> citiesReport(@RequestParam("estateId") BigInteger estateId, @RequestParam("userId") BigInteger userId) {
-		
+		logger.info("Fetching estate..");
         List<Estate> estateList = estateService.getEstate(estateId);
         
         for (Estate estate : estateList) {
@@ -298,12 +312,13 @@ public class EstateController {
         		estateList.remove(estate);
         	}
 		}
-       
-        estateService.updateInterests(estateId, userId);        
+        logger.info("Adding estate to user's interest list");
+        estateService.updateInterests(estateId, userId);  
+        logger.info("Generating pdf file for download..");
         ByteArrayInputStream bis = GeneratePdf.citiesReport(estateList);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=citiesreport.pdf");
-
+        logger.info("PDF Generated.. returning file..");
         return ResponseEntity
                 .ok()
                 .headers(headers)
@@ -319,10 +334,13 @@ public class EstateController {
 	 */
 	@GetMapping(value="/getInterestedUsers")
 	public ResponseEntity<?> getInterestedUsers(){
+		logger.info("fetching user list..");
 		List<User> userList = estateService.getInterestedUsers();
 		if(userList != null) {
+			logger.info("Returning user list.");
 			return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
 		}
+		logger.error("No users present... returning empty");
 		return new ResponseEntity<String>("No new interested users", HttpStatus.NO_CONTENT);
 	}
 	
@@ -334,7 +352,9 @@ public class EstateController {
 	 */
 	@GetMapping(value="/getOffersForInterestedUser")
 	public ResponseEntity<?> getOffersForInterestedUser(@RequestParam("userId") BigInteger userId){
+		logger.info("finding user object..");
 		User user = estateService.findUser(userId);
+		logger.info("Getting interested estate list of the user and returning it");
 		List<Estate> estateList = user.getInterestedList();
 		return new ResponseEntity<List<Estate>>(estateList, HttpStatus.OK);		
 	}
@@ -347,7 +367,9 @@ public class EstateController {
 	 */
 	@GetMapping(value="/getOfferEstate")
 	public ResponseEntity<?> getOfferEstate(@RequestParam("userId") BigInteger userId){
+		logger.info("finding user object..");
 		User user = estateService.findUser(userId);
+		logger.info("Fetching the estate which is on offer for the user.. and returning it");
 		Estate estate = user.getOfferEstate();
 		if(estate!=null) {
 			return new ResponseEntity<Estate>(estate, HttpStatus.OK);
@@ -363,6 +385,7 @@ public class EstateController {
 	 */
 	@GetMapping(value="/changeOffer")
 	public ResponseEntity<?> changeOffer(@RequestParam("userId") BigInteger userId, @RequestParam("estateId") BigInteger estateId){
+		logger.info("calling service to update offer estate for the user");
 		boolean status = estateService.changeOfferEstate(userId, estateId);
 		return new ResponseEntity<Boolean>(status, HttpStatus.OK);
 	}

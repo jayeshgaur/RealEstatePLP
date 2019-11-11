@@ -3,7 +3,7 @@ package com.cg.realestate.dto;
 /*
  * Author: 			Jayesh Gaur
  * Description: 	DTO class for Login RequestBody for JWT Authentication
- * Created on: 		October 12, 2019
+ * Created on: 		November 8, 2019
  */
 import java.io.Serializable;
 

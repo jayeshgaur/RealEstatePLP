@@ -1,5 +1,8 @@
 package com.cg.realestate.exception;
-
+/*
+ * AUthor: jayesh gaur
+ * Description: 	Custom Exception class
+ */
 public class ValidationException extends Exception {
 
 	/**

@@ -3,7 +3,7 @@ package com.cg.realestate.jwtconfig;
 /*
  * Author:			Jayesh Gaur
  * Description: 	Security configuration class. Responsible for injecting the AuthenticationManagerBuilder
- * Created on: 		October 14, 2019
+ * Created on: 		November 8, 2019
  */
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

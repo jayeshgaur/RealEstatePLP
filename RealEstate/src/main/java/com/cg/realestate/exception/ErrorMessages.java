@@ -1,5 +1,9 @@
 package com.cg.realestate.exception;
-
+/*
+ * Author:  Jayesh Gaur
+ * Description: 	All final string variables of error messages to avoid sonar cube error
+ * Created on: 		November 8, 2019
+ */
 public class ErrorMessages {
 	public static final String userErrorSecret = "Enter valid password.\\n Password should must contain one number,one capital letter,one small letter and one special character";
 	public static final String userErrorUserName = "Enter a valid name.\n Name should start with a capital letter";

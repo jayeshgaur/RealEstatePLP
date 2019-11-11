@@ -1,5 +1,9 @@
 package com.cg.realestate.dto;
-
+/*
+ * Author:  Jayesh Gaur
+ * Description:  DTO class for Images.
+ * Created on: 	November 8, 2019
+ */
 import java.math.BigInteger;
 
 import javax.persistence.Column;
