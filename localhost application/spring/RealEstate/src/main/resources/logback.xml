@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<!-- Author: Jayesh Gaur
+Description : Logger Configuration File
+Created On: October 13,2019 -->
+
+
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <springProfile name="default">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <root level="TRACE">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        
+    </springProfile>
+
+    <springProfile name="production">
+   
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+        <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>EMS.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxFileSize>1MB</maxFileSize>
+                <totalSizeCap>1MB</totalSizeCap>
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            </encoder>
+        </appender>
+        
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.cg.realestate" level="TRACE"/>
+        <logger name="org.springframework" level="ERROR"/>
+        <logger name="com.cg.realestate" level="DEBUG"/>
+        <root level="error">
+        <appender-ref ref="FILE-ROLLING"/>
+        </root>
+    </springProfile>
+
+</configuration>
