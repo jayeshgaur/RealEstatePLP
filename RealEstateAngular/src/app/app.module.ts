@@ -4,7 +4,7 @@ import { AppComponent }  from './app.component';
 import{FormsModule} from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router'
 import { TestComponent } from './_components/app.test';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomeComponent } from './_components/app.home';
 import { RegisterComponent } from './_components/app.register';
 import { LoginComponent } from './_components/app.login';
@@ -14,6 +14,8 @@ import { LogoutComponent } from './_components/app.logout';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { Error403Component } from './_components/app.error403';
 import { AddEstateComponent } from './_components/app.addestate';
+import { BasicAuthHtppInterceptorService } from './_service/app.basicauthservice';
+import { Error404Component } from './_components/app.error404';
 
 const myRoute: Routes =[
     { path: '', redirectTo:"home",pathMatch:'full'},
@@ -26,8 +28,7 @@ const myRoute: Routes =[
     { path: 'test', component:TestComponent},
     { path: 'forbidden', component:Error403Component},
     { path: 'addestate', component:AddEstateComponent},
-
-    { path: '**', component:HomeComponent}
+    { path: '**', component:Error404Component}
     
   
 
@@ -46,9 +47,11 @@ const myRoute: Routes =[
         AppComponent, Error403Component, TestComponent, 
         HomeComponent, RegisterComponent, LoginComponent,
          AdminHomeComponent, UserHomeComponent, LogoutComponent,
-         AddEstateComponent
+         AddEstateComponent, Error404Component
        	],
-    providers: [ ],
+    providers: [  {  
+        provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true 
+      }],
     bootstrap: [AppComponent]
 })
 
