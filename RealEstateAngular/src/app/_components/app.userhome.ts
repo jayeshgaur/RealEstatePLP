@@ -53,7 +53,6 @@ export class UserHomeComponent implements OnInit{
                     this.createImageFromBlob(element.estateId,val);
                   }); 
             });
-            console.log(this.offerImageUrl);
           });
 
      }
