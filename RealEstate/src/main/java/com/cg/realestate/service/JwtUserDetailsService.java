@@ -1,5 +1,6 @@
 package com.cg.realestate.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,10 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.cg.realestate.dto.Estate;
 import com.cg.realestate.dto.User;
 import com.cg.realestate.dto.UserDetailsImpl;
 import com.cg.realestate.exception.ErrorMessages;
 import com.cg.realestate.exception.ExistingUserException;
+import com.cg.realestate.repository.EstateRepository;
 import com.cg.realestate.repository.UserRepository;
 
 @Service
@@ -22,6 +25,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private EstateRepository estateRepository;
 	
 	@Autowired
 	private PasswordEncoder brcyptEncoder;
@@ -58,6 +64,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 		}
 		// save if email and phone numbers are unique
 		logger.info("Phone number is also unique. Registering the user..");
+		List<Estate> estateList = estateRepository.findAll();
+		if(estateList != null ) {
+			user.setOfferEstate(estateList.get(0));
+		}
 		user.setUserPassword(brcyptEncoder.encode(user.getUserPassword()));
 		user.setUserRole("ROLE_Customer");
 		return userRepository.save(user);

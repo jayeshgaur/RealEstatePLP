@@ -47,6 +47,15 @@ public class EstateServiceImpl implements EstateService {
 		estateRepository.save(estate);
 		return estate;
 	}
+	
+
+	@Override
+	public Estate addEstate(Estate estate, BigInteger userId) {
+		User user = userRepository.findById(userId).get();
+		estate.setEstateOwner(user);
+		estateRepository.save(estate);
+		return estate;
+	}
 
 	/*
 	 * Author: Jayesh Gaur 
@@ -168,5 +177,6 @@ public class EstateServiceImpl implements EstateService {
 	user.setOfferEstate(estate);
 	return true;
 	}
+
 
 }

@@ -1,0 +1,236 @@
+<head>
+
+
+
+    <!-- Title Page-->
+    <title>Registration</title>
+
+    <!-- Icons font CSS-->
+    <link href="assets/loginregister/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
+    <link href="assets/loginregister/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link
+        href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="assets/loginregister/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="assets/loginregister/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="assets/loginregister/css/main.css" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+
+    <div class="site-navbar mt-4">
+        <div class="container py-1">
+            <div class="row align-items-center">
+                <div class="col-8 col-md-8 col-lg-4">
+                    <h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0"><strong>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Homeland<span
+                                    class="text-danger">.</span></strong></a></h1>
+                </div>
+                <div class="col-4 col-md-4 col-lg-8">
+                    <nav class="site-navigation text-right text-md-right site-navbar" role="navigation">
+
+                        <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#"
+                                class="site-menu-toggle js-menu-toggle text-white"><span
+                                    class="icon-menu h3"></span></a></div>
+
+                        <ul class="site-menu js-clone-nav d-none d-lg-block">
+                            <li>
+                                <a href="userhome">Buy</a>
+                            </li>
+                            <li class="active"><a href="addestate">Sell</a></li>
+                            <li ><a href="logout">Logout</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins"
+        style="background-image: url(/assets/images/registration.jpg);">
+
+
+
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Enter your property details</h2>
+                    <form #f="ngForm" name="registerform" novalidate>
+
+                        <div class="form-group">
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">Property Name</label>
+                                    <input class="input--style-4" [(ngModel)]="estate.estateName" type="text"
+                                        name="estateName"  minlength="15" #estateName="ngModel"
+                                        [ngClass]="{'is-invalid':f.submitted && estateName.invalid }" required>
+                                </div>
+                            </div>
+                            <div *ngIf="estateName.invalid && (estateName.dirty ||estateName.touched || f.submitted)"
+                                class="alert alert-danger">
+                                <div *ngIf="estateName.errors.required">
+                                    Name is required.
+                                </div>
+                                <div *ngIf="estateName.errors.minlength">
+                                    At least 15 characters long.
+                                </div>
+                            </div>
+
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">Property area in square feet</label>
+                                    <input class="input--style-4" type="text" name="estate.estateArea"
+                                        [(ngModel)]="estate.estateArea" #estateArea="ngModel"
+                                        [ngClass]="{'is-invalid':f.submitted && estateArea.invalid  }" maxlength="5"
+                                        minlength="2" pattern="[0-9]+" required>
+                                </div>
+                            </div>
+                            <div *ngIf="estateArea.invalid && (estateArea.dirty ||estateArea.touched || f.submitted )"
+                                class="alert alert-danger">
+                                <div *ngIf="estateArea.errors.required">
+                                   Property area is required.
+                                </div>
+                                <div *ngIf="estateArea.errors.minlength">
+                                    Your property area should be more than 10 sq. ft
+                                </div>
+                                <div *ngIf="estateArea.errors.pattern">
+                                    Area should be digits only
+                                </div>
+                            </div>
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">Price (in Rupee)</label>
+                                    <input class="input--style-4" type="text" name="estate.estatePrice"
+                                        [(ngModel)]="estate.estatePrice" #estatePrice="ngModel"
+                                        [ngClass]="{'is-invalid':f.submitted && estatePrice.invalid  }" maxlength="15"
+                                        minlength="5" pattern="[0-9]+" required>
+                                </div>
+                            </div>
+                            <div *ngIf="estatePrice.invalid && (estatePrice.dirty ||estatePrice.touched || f.submitted )"
+                                class="alert alert-danger">
+                                <div *ngIf="estatePrice.errors.required">
+                                   Property area is required.
+                                </div>
+                                <div *ngIf="estatePrice.errors.minlength">
+                                    Minimum price is Rs 10, 000
+                                </div>
+                                <div *ngIf="estatePrice.errors.pattern">
+                                    Price should be digits only
+                                </div>
+                            </div>
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">Address Line 1</label>
+                                    <input class="input--style-4" [(ngModel)]="estateAddress.addressLine" type="text"
+                                        name="addressLine"  minlength="20" #addressLine="ngModel"
+                                        [ngClass]="{'is-invalid':f.submitted && addressLine.invalid }" required>
+                                </div>
+                            </div>
+                            <div *ngIf="addressLine.invalid && (addressLine.dirty ||addressLine.touched || f.submitted)"
+                                class="alert alert-danger">
+                                <div *ngIf="addressLine.errors.required">
+                                    Address is required.
+                                </div>
+                                <div *ngIf="addressLine.errors.minlength">
+                                    At least 20 characters long.
+                                </div>
+                            </div>
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">City</label>
+                                    <select class="input--style-4" name="centerSelected" [(ngModel)]="estateAddress.city" #city="ngModel"
+                                        [ngClass]="{'invalid-data': city.invalid && f.submitted, 'valid-data': city.valid && f.submitted}" required>
+                                        <option value="Mumbai" >Mumbai</option>
+                                        <option value="Kolkata" selected>Kolkata</option>
+                                        <option value="Delhi">Delhi</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div *ngIf="city.invalid && f.submitted" class="alert alert-danger">
+                                <span style="color: red;">Please Select City.</span>
+                            </div>
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">State</label>
+                                    <input class="input--style-4" [(ngModel)]="estateAddress.state" type="text"
+                                        name="state" #state="ngModel"
+                                        [ngClass]="{'is-invalid':f.submitted && state.invalid }" required>
+                                </div>
+                            </div>
+                            <div *ngIf="state.invalid && (state.dirty ||state.touched || f.submitted)"
+                                class="alert alert-danger">
+                                <div *ngIf="state.errors.required">
+                                    State is required.
+                                </div>
+                            </div>
+
+                            <div class="row row-space">
+                                <div class="input-group">
+                                    <label class="label">Pincode</label>
+                                    <input class="input--style-4" type="text" name="estateAddress.pincode"
+                                        [(ngModel)]="estateAddress.pincode" #pincode="ngModel"
+                                        [ngClass]="{'is-invalid':f.submitted && pincode.invalid  }" maxlength="6"
+                                        minlength="6" pattern="[0-9]+" required>
+                                </div>
+                            </div>
+                            <div *ngIf="pincode.invalid && (pincode.dirty ||pincode.touched || f.submitted )"
+                                class="alert alert-danger">
+                                <div *ngIf="pincode.errors.required">
+                                   Pincode is required.
+                                </div>
+                                <div *ngIf="pincode.errors.minlength">
+                                    Pincode has to be 6 digits
+                                </div>
+                                <div *ngIf="pincode.errors.pattern">
+                                    Pincode should be digits only
+                                </div>
+                            </div>
+
+                            <div class="row row-space">
+                                    <div class="input-group">
+                                            <input class="input--style-4" required type="file" id="file" 
+                                            (change)="getFileDetails($event)" multiple accept=".jpg"/>
+                                    </div>
+                                    <td style="color: red;">{{errorMessage}}</td>
+                                </div>
+
+                            <div class="p-t-15">
+                                <button (click)="addProperty()" [disabled]="f.form.invalid"
+                                    class="btn btn--radius-2 btn--blue" type="submit">Add Property!</button>
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="p-t-15">
+                        <a href="register"> New here? Signup!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/datepicker/moment.min.js"></script>
+    <script src="vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="js/global.js"></script>

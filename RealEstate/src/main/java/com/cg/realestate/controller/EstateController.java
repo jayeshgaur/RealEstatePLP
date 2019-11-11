@@ -43,7 +43,6 @@ import com.cg.realestate.exception.ExistingUserException;
 import com.cg.realestate.exception.ValidationException;
 import com.cg.realestate.filesystem.GeneratePdf;
 import com.cg.realestate.jwtconfig.JwtTokenUtil;
-import com.cg.realestate.repository.EstateRepository;
 import com.cg.realestate.service.EstateService;
 import com.cg.realestate.service.JwtUserDetailsService;
 
@@ -188,6 +187,33 @@ public class EstateController {
 		logger.info("All images added into estate and the Database.CACHE..and setting foreign keys..");
 		return new ResponseEntity<Estate>(estateService.addEstate(estate), HttpStatus.OK);
 	}
+	
+	
+	/*
+	 * Description: Submit the new estate. Saves the property details into database
+	 * which is now available for users to view in estate listings Created on:
+	 * November 6, 2019 Input: Estate object details and its image files in the form
+	 * of MultipartFile Output: Estate Object
+	 */
+	@PostMapping(value = "/addProperty")
+	public ResponseEntity<?> addProperty(@ModelAttribute Estate estate, @RequestParam("files") MultipartFile[] files, @RequestParam("userId") BigInteger userId) {
+
+		logger.info("Adding images one by one into database..");
+		// Adding the images into database and adding them to the list of images of the estate
+		estate.setImageList(Arrays.asList(files).stream().map(file -> {
+			try {
+				return uploadFile(file);
+			} catch (ValidationException exception) {
+
+				exception.printStackTrace();
+			}
+			return null;
+		}).collect(Collectors.toList()));
+		logger.info("All images added into estate and the Database.CACHE..and setting foreign keys..");
+		return new ResponseEntity<Estate>(estateService.addEstate(estate, userId), HttpStatus.OK);
+	}
+
+	
 
 	@GetMapping(value = "/userpage")
 	public ResponseEntity<?> userPage() {

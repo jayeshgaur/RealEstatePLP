@@ -21,4 +21,5 @@ public interface EstateService {
 	User updateInterests(BigInteger estateId, BigInteger userId);
 	List<User> getInterestedUsers();
 	boolean changeOfferEstate(BigInteger userId, BigInteger estateId);
+	Estate addEstate(Estate estate, BigInteger userId);
 }

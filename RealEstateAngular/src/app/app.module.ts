@@ -13,6 +13,8 @@ import { UserHomeComponent } from './_components/app.userhome';
 import { LogoutComponent } from './_components/app.logout';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { Error403Component } from './_components/app.error403';
+import { AddEstateComponent } from './_components/app.addestate';
+
 const myRoute: Routes =[
     { path: '', redirectTo:"home",pathMatch:'full'},
     { path: 'home', component:HomeComponent},
@@ -23,6 +25,8 @@ const myRoute: Routes =[
     { path: 'logout', component:LogoutComponent},
     { path: 'test', component:TestComponent},
     { path: 'forbidden', component:Error403Component},
+    { path: 'addestate', component:AddEstateComponent},
+
     { path: '**', component:HomeComponent}
     
   
@@ -39,7 +43,10 @@ const myRoute: Routes =[
         
     ],
     declarations: [
-        AppComponent, Error403Component, TestComponent, HomeComponent, RegisterComponent, LoginComponent, AdminHomeComponent, UserHomeComponent, LogoutComponent
+        AppComponent, Error403Component, TestComponent, 
+        HomeComponent, RegisterComponent, LoginComponent,
+         AdminHomeComponent, UserHomeComponent, LogoutComponent,
+         AddEstateComponent
        	],
     providers: [ ],
     bootstrap: [AppComponent]
